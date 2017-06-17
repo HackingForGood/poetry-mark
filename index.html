@@ -68,6 +68,15 @@
   </div>
   </header>
 
+
+  <main class="mdl-layout__content mdl-color--grey-100">
+    <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
+
+      <!-- Messages container -->
+      <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+        <div class="mdl-card__supporting-text mdl-color-text--grey-600" id="messages-card">
+        </div>
+      </div>
       <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
         <div class="mdl-snackbar__text"></div>
         <button class="mdl-snackbar__action" type="button"></button>
@@ -85,6 +94,10 @@
     <img id="right-arrow" src="/images/right-arrow.png" height=512 width=512>
 </div>
 
+<template>
+  <link rel="stylesheet" href="styles/star-style.css"> 
+  <span class="favorite-star-character">&#x2605;</span>
+</template>
 
 <!-- Import and configure the Firebase SDK -->
 <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
@@ -103,7 +116,8 @@
   };
   firebase.initializeApp(config);
 </script>
-
+<script src="scripts/star.js"></script>
 <script src="scripts/main.js"></script>
 </body>
+
 </html>
