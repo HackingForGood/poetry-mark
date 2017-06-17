@@ -8,14 +8,13 @@ function PoetryMark() {
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
   this.poemCards = document.getElementById('poem-body');
-  
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
 
   this.initFirebase();
   this.loadPoem(this.poemCards, 1);
-  this.loadPoem(this.poemCards, 1);
+  this.loadPoem(this.poemCards, 2);
 }
 
 PoetryMark.prototype.initFirebase = function() {
@@ -27,14 +26,14 @@ PoetryMark.prototype.initFirebase = function() {
   this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
 
-// Signs-in Friendly Chat.
+// Signs-in Poetry Mark.
 PoetryMark.prototype.signIn = function() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new firebase.auth.GoogleAuthProvider();
   this.auth.signInWithPopup(provider);
 };
 
-// Signs-out of Friendly Chat.
+// Signs-out of Poetry Mark.
 PoetryMark.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
@@ -96,6 +95,7 @@ PoetryMark.prototype.checkSetup = function() {
 PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
   var poemElement = document.createElement("div");
   poemElement.setAttribute("class", "mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop");
+  poemElement.setAttribute("poemId", poemId);
 
   return this.database.ref('/poems/' + poemId).once('value').then(function(snapshot) {
     var poet = document.createElement("p");
@@ -110,6 +110,28 @@ PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
 
     var starContainer = document.createElement("p");
     var star = document.createElement("favorite-star");
+    star.onclick = function () {
+      var user = firebase.auth().currentUser;
+      var userPoemsRef = firebase.database().ref('users/' + user.uid + "/likedPoems/");
+
+      if (this.hasAttribute('active')) {
+        console.log("adding liked poem");
+        if (user) {
+          var obj = {};
+          obj[poemId] = true;
+          userPoemsRef.update(obj);
+        } 
+      } 
+      else {
+        console.log("removing liked poem");
+        if (user) {
+          var obj = {};
+          obj[poemId] = false;
+          userPoemsRef.update(obj);
+        }
+      };
+    };
+    
     starContainer.appendChild(star);
 
     poem.id = "poem";
@@ -122,8 +144,10 @@ PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
     poemElement.appendChild(starContainer);
     
     cardContainer.appendChild(poemElement);
-});
-}
+
+  })
+};
+
 
  window.onload = function() {
   window.poetryMark = new PoetryMark();
