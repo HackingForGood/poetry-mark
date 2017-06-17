@@ -6,22 +6,18 @@ function PoetryMark() {
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
-  this.leftArrow = document.getElementById('left-arrow');
-  this.rightArrow = document.getElementById('right-arrow');
   this.poemCards = document.getElementById('poem-body');
-<<<<<<< HEAD
   this.oneCard = document.getElementById('poem-card');
   
-=======
->>>>>>> b17423c14077a8e2aad72dd06399842e3c896150
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
-  this.leftArrow.addEventListener('click', this.pageLeft.bind(this));
-  this.rightArrow.addEventListener('click', this.pageRight.bind(this));
 
   this.initFirebase();
   this.addPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 2);
+  this.addPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 2);
 }
 
 PoetryMark.prototype.initFirebase = function() {
@@ -33,14 +29,14 @@ PoetryMark.prototype.initFirebase = function() {
   this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
 
-// Signs-in Poetry Mark.
+// Signs-in Friendly Chat.
 PoetryMark.prototype.signIn = function() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new firebase.auth.GoogleAuthProvider();
   this.auth.signInWithPopup(provider);
 };
 
-// Signs-out of Poetry Mark.
+// Signs-out of Friendly Chat.
 PoetryMark.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
@@ -109,7 +105,6 @@ PoetryMark.prototype.checkSetup = function() {
 };
 
 PoetryMark.prototype.addPoem = function(poemContainer, poemId) {
-<<<<<<< HEAD
  var poemElement = document.createElement("div");
  poemElement.id = "poem-card";
  poemElement.setAttribute("poemId", poemId);
@@ -134,71 +129,24 @@ PoetryMark.prototype.addPoem = function(poemContainer, poemId) {
  
  poemContainer.appendChild(poemElement);
 
-=======
-  var poemElement = document.createElement("div");
-  poemElement.setAttribute("class", "mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop");
-  poemElement.setAttribute("poemId", poemId);
-  poemElement.id = "poem-card";
-  this.loadPoem(poemElement, poemId);
-  
-  poemContainer.style.border = "1px solid #AAB7B8";
-  poemContainer.appendChild(poemElement);
->>>>>>> b17423c14077a8e2aad72dd06399842e3c896150
 }
 
 PoetryMark.prototype.loadPoem = function(poemDiv, poemId) {
 
  var poemElement = poemDiv;
 
-<<<<<<< HEAD
  return this.database.ref('/poems/' + poemId).once('value').then(function(snapshot) {
    poet = document.getElementById('poet-' + poemId);
    title = document.getElementById('title-' + poemId);
    poem = document.getElementById('poem-' + poemId);
-=======
-    var starContainer = document.createElement("p");
-    var star = document.createElement("favorite-star");
-    star.onclick = function () {
-      var user = firebase.auth().currentUser;
-      var userPoemsRef = firebase.database().ref('users/' + user.uid + "/likedPoems/");
-
-      if (this.hasAttribute('active')) {
-        console.log("adding liked poem");
-        if (user) {
-          var obj = {};
-          obj[poemId] = true;
-          userPoemsRef.update(obj);
-        } 
-      } 
-      else {
-        console.log("removing liked poem");
-        if (user) {
-          var obj = {};
-          obj[poemId] = false;
-          userPoemsRef.update(obj);
-        }
-      };
-    };
-    
-    starContainer.appendChild(star);
->>>>>>> b17423c14077a8e2aad72dd06399842e3c896150
 
    poet.innerHTML = snapshot.val().poet;
    title.innerHTML = snapshot.val().title;
 
-<<<<<<< HEAD
    var p = snapshot.val().poem.replace(/\n/g, "<br />");
    poem.innerHTML = p;
 });
 }
-=======
-    poemElement.appendChild(title);
-    poemElement.appendChild(poet);
-    poemElement.appendChild(poem);
-    poemElement.appendChild(starContainer);
-  })
-};
->>>>>>> b17423c14077a8e2aad72dd06399842e3c896150
 
 PoetryMark.prototype.newPoem = function(poemDiv, poemId) {
   poemDiv.innerHTML = "";
