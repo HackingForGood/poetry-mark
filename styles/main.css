@@ -17,6 +17,26 @@
 html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
 }
+
+#toolbar {
+  display: flex;
+}
+
+.flex {
+  flex-grow: 1;
+  text-align: center;
+  padding: 10px 5px;
+}
+
+.flex a {
+  text-decoration: none;
+  color: #5F6A6A;
+}
+
+.flex a:hover {
+  color: #AAB7B8;
+}
+
 main, #messages-card {
   height: 100%;
   padding-bottom: 0;
