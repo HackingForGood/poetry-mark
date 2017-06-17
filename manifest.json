@@ -1,7 +1,7 @@
 {
   "name": "Poetry Mark",
   "short_name": "Poetry Mark",
-  "start_url": "/index.html",
+  "start_url": "/home",
   "display": "standalone",
   "orientation": "portrait"
 }
