@@ -72,6 +72,10 @@
     <img id="right-arrow" src="/images/right-arrow.png" height=512 width=512>
 </div>
 
+<template>
+  <link rel="stylesheet" href="styles/star-style.css"> 
+  <span class="favorite-star-character">&#x2605;</span>
+</template>
 
 <!-- Import and configure the Firebase SDK -->
 <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
@@ -90,7 +94,8 @@
   };
   firebase.initializeApp(config);
 </script>
-
+<script src="scripts/star.js"></script>
 <script src="scripts/main.js"></script>
 </body>
+
 </html>

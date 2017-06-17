@@ -10,7 +10,6 @@ function PoetryMark() {
   this.rightArrow = document.getElementById('right-arrow');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
   this.poemCards = document.getElementById('poem-body');
-
   
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -19,8 +18,8 @@ function PoetryMark() {
   this.rightArrow.addEventListener('click', this.pageRight.bind(this));
 
   this.initFirebase();
-
-  this.loadPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 2);
 }
 
 PoetryMark.prototype.initFirebase = function() {
@@ -106,26 +105,41 @@ PoetryMark.prototype.checkSetup = function() {
   }
 };
 
-PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
+PoetryMark.prototype.addPoem = function(poemContainer, poemId) {
   var poemElement = document.createElement("div");
-  poemElement.setAttribute("class", "mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop");
+  poemElement.id = "poem-card";
+  this.loadPoem(poemElement, poemId);
+  
+  poemContainer.style.border = "1px solid #AAB7B8";
+  poemContainer.appendChild(poemElement);
+}
+
+PoetryMark.prototype.loadPoem = function(poemDiv, poemId) {
+  var poemElement = poemDiv;
 
   return this.database.ref('/poems/' + poemId).once('value').then(function(snapshot) {
     var poet = document.createElement("p");
     poet.appendChild(document.createTextNode(snapshot.val().poet));
+
     var title = document.createElement("p");
     title.appendChild(document.createTextNode(snapshot.val().title));
+
     var poem = document.createElement("p");
     var p = snapshot.val().poem.replace(/\n/g, "<br />");
     poem.innerHTML = p;
+
+    var starContainer = document.createElement("p");
+    var star = document.createElement("favorite-star");
+    starContainer.appendChild(star);
+
     poem.id = "poem";
     poet.id = "poet";
     title.id = "title";
+
     poemElement.appendChild(title);
     poemElement.appendChild(poet);
     poemElement.appendChild(poem);
-    cardContainer.style.border = "1px solid #AAB7B8";
-    cardContainer.appendChild(poemElement);
+    poemElement.appendChild(starContainer);
 });
 }
 
