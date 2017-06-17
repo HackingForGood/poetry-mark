@@ -100,17 +100,27 @@ PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
   return this.database.ref('/poems/' + poemId).once('value').then(function(snapshot) {
     var poet = document.createElement("p");
     poet.appendChild(document.createTextNode(snapshot.val().poet));
+
     var title = document.createElement("p");
     title.appendChild(document.createTextNode(snapshot.val().title));
+
     var poem = document.createElement("p");
     var p = snapshot.val().poem.replace(/\n/g, "<br />");
     poem.innerHTML = p;
+
+    var starContainer = document.createElement("p");
+    var star = document.createElement("favorite-star");
+    starContainer.appendChild(star);
+
     poem.id = "poem";
     poet.id = "poet";
     title.id = "title";
+
     poemElement.appendChild(title);
     poemElement.appendChild(poet);
     poemElement.appendChild(poem);
+    poemElement.appendChild(starContainer);
+    
     cardContainer.appendChild(poemElement);
 });
 }
