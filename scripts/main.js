@@ -1,5 +1,7 @@
   
 function PoetryMark() {
+  this.checkSetup();
+
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
@@ -9,7 +11,10 @@ function PoetryMark() {
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
 
-FriendlyChat.prototype.initFirebase = function() {
+  this.initFirebase();
+}
+
+PoetryMark.prototype.initFirebase = function() {
   // Shortcuts to Firebase SDK features.
   this.auth = firebase.auth();
   this.database = firebase.database();
@@ -19,20 +24,20 @@ FriendlyChat.prototype.initFirebase = function() {
 };
 
 // Signs-in Friendly Chat.
-FriendlyChat.prototype.signIn = function() {
+PoetryMark.prototype.signIn = function() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new firebase.auth.GoogleAuthProvider();
   this.auth.signInWithPopup(provider);
 };
 
 // Signs-out of Friendly Chat.
-FriendlyChat.prototype.signOut = function() {
+PoetryMark.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
 };
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
-FriendlyChat.prototype.onAuthStateChanged = function(user) {
+PoetryMark.prototype.onAuthStateChanged = function(user) {
   if (user) { // User is signed in!
     var profilePicUrl = user.photoURL; // Only change these two lines!
     var userName = user.displayName;   // Only change these two lines!
@@ -49,11 +54,6 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
     // Hide sign-in button.
     this.signInButton.setAttribute('hidden', 'true');
 
-    // We load currently existing chant messages.
-    this.loadMessages();
-
-    // We save the Firebase Messaging Device token and enable notifications.
-    this.saveMessagingDeviceToken();
   } else { // User is signed out!
     // Hide user's profile and sign-out button.
     this.userName.setAttribute('hidden', 'true');
@@ -66,7 +66,7 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
 };
 
 // Returns true if user is signed-in. Otherwise false and displays a message.
-FriendlyChat.prototype.checkSignedInWithMessage = function() {
+PoetryMark.prototype.checkSignedInWithMessage = function() {
   // Return true if the user is signed in Firebase
   if (this.auth.currentUser) {
     return true;
@@ -81,13 +81,14 @@ FriendlyChat.prototype.checkSignedInWithMessage = function() {
   return false;
 };
 
+PoetryMark.prototype.checkSetup = function() {
+  if (!window.firebase || !(firebase.app instanceof Function) || !firebase.app().options) {
+    window.alert('You have not configured and imported the Firebase SDK. ' +
+        'Make sure you go through the codelab setup instructions and make ' +
+        'sure you are running the codelab using `firebase serve`');
+  }
+};
 
-
-
-
-
-
- }
  window.onload = function() {
-  window.poetry-mark = new PoetryMark();
+  window.poetryMark = new PoetryMark();
 };
