@@ -7,7 +7,7 @@ function PoetryMark() {
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
-  this.poemCards = document.getElementById('poems-card-container');
+  this.poemCards = document.getElementById('poem-body');
   
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
