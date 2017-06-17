@@ -14,8 +14,8 @@ function PoetryMark() {
   this.signInButton.addEventListener('click', this.signIn.bind(this));
 
   this.initFirebase();
-  this.loadPoem(this.poemCards, 1);
-  this.loadPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 2);
 }
 
 PoetryMark.prototype.initFirebase = function() {
@@ -93,9 +93,16 @@ PoetryMark.prototype.checkSetup = function() {
   }
 };
 
-PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
+PoetryMark.prototype.addPoem = function(poemContainer, poemId) {
   var poemElement = document.createElement("div");
-  poemElement.setAttribute("class", "mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop");
+  poemElement.id = "poem-card";
+  this.loadPoem(poemElement, poemId);
+  
+  poemContainer.appendChild(poemElement);
+}
+
+PoetryMark.prototype.loadPoem = function(poemDiv, poemId) {
+  var poemElement = poemDiv;
 
   return this.database.ref('/poems/' + poemId).once('value').then(function(snapshot) {
     var poet = document.createElement("p");
@@ -120,8 +127,6 @@ PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
     poemElement.appendChild(poet);
     poemElement.appendChild(poem);
     poemElement.appendChild(starContainer);
-    
-    cardContainer.appendChild(poemElement);
 });
 }
 
