@@ -1,4 +1,4 @@
-  
+
 function PoetryMark() {
   this.checkSetup();
 
@@ -7,11 +7,14 @@ function PoetryMark() {
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+  this.firstCard = document.getElementById('messages-card');
+  
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
 
   this.initFirebase();
+  this.loadPoem();
 }
 
 PoetryMark.prototype.initFirebase = function() {
@@ -88,6 +91,18 @@ PoetryMark.prototype.checkSetup = function() {
         'sure you are running the codelab using `firebase serve`');
   }
 };
+
+PoetryMark.prototype.loadPoem = function() {
+  var poemId = 1;
+  card = this.firstCard;
+
+  return this.database.ref('/poems/' + poemId).once('value').then(function(snapshot) {
+    var poet = snapshot.val().poet;
+    var title = snapshot.val().title;
+    var poem = snapshot.val().poem;
+    card.innerHTML = poem;
+});
+}
 
  window.onload = function() {
   window.poetryMark = new PoetryMark();
