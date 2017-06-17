@@ -16,7 +16,6 @@
 
 html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
-  height: 100%;
 }
 
 #header {
@@ -72,12 +71,15 @@ main {
 }
 
 #poem-body {
+  margin-top: 20px;
   width: 40%;
   padding: 20px 50px;
   overflow: auto;
+  max-height: 575px;
+  border: 1px solid #AAB7B8;
 }
 
-#poet {
+#poet- {
   font-size: 14px;
 }
 

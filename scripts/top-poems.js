@@ -6,19 +6,18 @@ function PoetryMark() {
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
-  this.leftArrow = document.getElementById('left-arrow');
-  this.rightArrow = document.getElementById('right-arrow');
   this.poemCards = document.getElementById('poem-body');
   this.oneCard = document.getElementById('poem-card');
   
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
-  this.leftArrow.addEventListener('click', this.pageLeft.bind(this));
-  this.rightArrow.addEventListener('click', this.pageRight.bind(this));
 
   this.initFirebase();
   this.addPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 2);
+  this.addPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 2);
 }
 
 PoetryMark.prototype.initFirebase = function() {
