@@ -19,6 +19,11 @@ function PoetryMark() {
   this.initFirebase();
   this.addPoem(this.poemCards, 1);
   this.addPoem(this.poemCards, 2);
+  this.addPoem(this.poemCards, 3);
+  // this.addPoem(this.poemCards, 4);
+  // this.addPoem(this.poemCards, 5);
+  // this.addPoem(this.poemCards, 6);
+
 }
 
 PoetryMark.prototype.initFirebase = function() {
@@ -164,6 +169,24 @@ PoetryMark.prototype.loadPoem = function(poemDiv, poemId) {
     poemElement.appendChild(poem);
     poemElement.appendChild(starContainer);
   })
+};
+
+
+PoetryMark.prototype.loadLikedPoems = function(cardContainer) {
+ var user = firebase.auth().currentUser;
+ console.log(user);
+ if (user) {
+   firebase.database().ref('users/' + user.uid + '/likedPoems').once('value').then((function(snapshot) {
+     var data = snapshot.val();
+     for (var poemId in data) {
+       if (data[poemId]) {
+         this.addPoem(this.poemCards, poemId);
+       }
+     }
+   }).bind(this));
+ } else { 
+   console.log('no user! do something...');
+ };
 };
 
  window.onload = function() {
