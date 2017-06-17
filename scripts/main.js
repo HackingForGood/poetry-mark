@@ -6,15 +6,19 @@ function PoetryMark() {
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
+  this.leftArrow = document.getElementById('left-arrow');
+  this.rightArrow = document.getElementById('right-arrow');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
   this.poemCards = document.getElementById('poem-body');
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
+  this.leftArrow.addEventListener('click', this.pageLeft.bind(this));
+  this.rightArrow.addEventListener('click', this.pageRight.bind(this));
 
   this.initFirebase();
-  this.loadPoem(this.poemCards, 1);
-  this.loadPoem(this.poemCards, 2);
+  this.addPoem(this.poemCards, 1);
+  this.addPoem(this.poemCards, 2);
 }
 
 PoetryMark.prototype.initFirebase = function() {
@@ -38,6 +42,14 @@ PoetryMark.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
 };
+
+PoetryMark.prototype.pageLeft = function() {
+  this.loadPoem(this.poemCards, 1);
+}
+
+PoetryMark.prototype.pageRight = function() {
+  this.loadPoem(this.poemCards, 0);
+}
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 PoetryMark.prototype.onAuthStateChanged = function(user) {
@@ -92,10 +104,19 @@ PoetryMark.prototype.checkSetup = function() {
   }
 };
 
-PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
+PoetryMark.prototype.addPoem = function(poemContainer, poemId) {
   var poemElement = document.createElement("div");
   poemElement.setAttribute("class", "mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop");
   poemElement.setAttribute("poemId", poemId);
+  poemElement.id = "poem-card";
+  this.loadPoem(poemElement, poemId);
+  
+  poemContainer.style.border = "1px solid #AAB7B8";
+  poemContainer.appendChild(poemElement);
+}
+
+PoetryMark.prototype.loadPoem = function(poemDiv, poemId) {
+  var poemElement = poemDiv;
 
   return this.database.ref('/poems/' + poemId).once('value').then(function(snapshot) {
     var poet = document.createElement("p");
@@ -142,12 +163,8 @@ PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
     poemElement.appendChild(poet);
     poemElement.appendChild(poem);
     poemElement.appendChild(starContainer);
-    
-    cardContainer.appendChild(poemElement);
-
   })
 };
-
 
  window.onload = function() {
   window.poetryMark = new PoetryMark();
