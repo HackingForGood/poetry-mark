@@ -6,12 +6,16 @@ function PoetryMark() {
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
+  this.leftArrow = document.getElementById('left-arrow');
+  this.rightArrow = document.getElementById('right-arrow');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
   this.poemCards = document.getElementById('poem-body');
   
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
+  this.leftArrow.addEventListener('click', this.pageLeft.bind(this));
+  this.rightArrow.addEventListener('click', this.pageRight.bind(this));
 
   this.initFirebase();
   this.addPoem(this.poemCards, 1);
@@ -39,6 +43,14 @@ PoetryMark.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
 };
+
+PoetryMark.prototype.pageLeft = function() {
+  this.loadPoem(this.poemCards, 1);
+}
+
+PoetryMark.prototype.pageRight = function() {
+  this.loadPoem(this.poemCards, 0);
+}
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 PoetryMark.prototype.onAuthStateChanged = function(user) {
@@ -98,6 +110,7 @@ PoetryMark.prototype.addPoem = function(poemContainer, poemId) {
   poemElement.id = "poem-card";
   this.loadPoem(poemElement, poemId);
   
+  poemContainer.style.border = "1px solid #AAB7B8";
   poemContainer.appendChild(poemElement);
 }
 
