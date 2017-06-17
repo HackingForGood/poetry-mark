@@ -1,4 +1,4 @@
-  
+
 function PoetryMark() {
   this.checkSetup();
 
@@ -7,11 +7,15 @@ function PoetryMark() {
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+  this.poemCards = document.getElementById('poems-card-container');
+  
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
 
   this.initFirebase();
+  this.loadPoem(this.poemCards, 1);
+  this.loadPoem(this.poemCards, 1);
 }
 
 PoetryMark.prototype.initFirebase = function() {
@@ -88,6 +92,28 @@ PoetryMark.prototype.checkSetup = function() {
         'sure you are running the codelab using `firebase serve`');
   }
 };
+
+PoetryMark.prototype.loadPoem = function(cardContainer, poemId) {
+  var poemElement = document.createElement("div");
+  poemElement.setAttribute("class", "mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop");
+
+  return this.database.ref('/poems/' + poemId).once('value').then(function(snapshot) {
+    var poet = document.createElement("p");
+    poet.appendChild(document.createTextNode(snapshot.val().poet));
+    var title = document.createElement("p");
+    title.appendChild(document.createTextNode(snapshot.val().title));
+    var poem = document.createElement("p");
+    var p = snapshot.val().poem.replace(/\n/g, "<br />");
+    poem.innerHTML = p;
+    poem.id = "poem";
+    poet.id = "poet";
+    title.id = "title";
+    poemElement.appendChild(title);
+    poemElement.appendChild(poet);
+    poemElement.appendChild(poem);
+    cardContainer.appendChild(poemElement);
+});
+}
 
  window.onload = function() {
   window.poetryMark = new PoetryMark();
