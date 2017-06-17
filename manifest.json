@@ -1,6 +1,6 @@
 {
-  "name": "Friendly Chat",
-  "short_name": "Friendly Chat",
+  "name": "Poetry Mark",
+  "short_name": "Poetry Mark",
   "start_url": "/index.html",
   "display": "standalone",
   "orientation": "portrait"
